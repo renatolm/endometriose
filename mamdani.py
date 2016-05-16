@@ -82,4 +82,4 @@ dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#
 ## Base de regras
 #Regra 1: dor pelvica fraca; dificuldade baixa; dor costas/pernas fraca => risco baixo
 ativa_regra1 = np.fmin(dorCP_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
-regra1 = np.fmin(ativa_regra1, risco_baixo)		#implicacao
+regra1 = np.fmin(ativa_regra1, risco_baixo)		#implicacao 
