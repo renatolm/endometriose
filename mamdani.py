@@ -77,3 +77,9 @@ dificuldade_nivel_alta = fuzz.interp_membership(dificuldadeEngravidar, dific_alt
 dorCP_nivel_fraca = fuzz.interp_membership(dorNasCostasPernas, dorCP_fraca, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas fraca
 dorCP_nivel_media = fuzz.interp_membership(dorNasCostasPernas, dorCP_media, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas media
 dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas forte
+
+
+## Base de regras
+#Regra 1: dor pelvica fraca; dificuldade baixa; dor costas/pernas fraca => risco baixo
+ativa_regra1 = np.fmin(dorCP_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+regra1 = np.fmin(ativa_regra1, risco_baixo)		#implicacao
