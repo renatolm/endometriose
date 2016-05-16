@@ -60,3 +60,20 @@ ax3.legend()
 #Exibir graficos das funcoes de pertinencia
 plt.tight_layout()
 plt.show()
+
+
+## Simulando uma entrada com:
+#Nivel de dor pelvica 9
+dorP_nivel_fraca = fuzz.interp_membership(dorPelvica, dorP_fraca, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica fraca
+dorP_nivel_media = fuzz.interp_membership(dorPelvica, dorP_media, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica media
+dorP_nivel_forte = fuzz.interp_membership(dorPelvica, dorP_forte, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica forte
+
+#Nivel de dificuldade para engravidar 7
+dificuldade_nivel_baixa = fuzz.interp_membership(dificuldadeEngravidar, dific_baixa, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade baixa
+dificuldade_nivel_media = fuzz.interp_membership(dificuldadeEngravidar, dific_media, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade media
+dificuldade_nivel_alta = fuzz.interp_membership(dificuldadeEngravidar, dific_alta, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade alta
+
+#Nivel de dor nas costas/pernas 8
+dorCP_nivel_fraca = fuzz.interp_membership(dorNasCostasPernas, dorCP_fraca, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas fraca
+dorCP_nivel_media = fuzz.interp_membership(dorNasCostasPernas, dorCP_media, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas media
+dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas forte
