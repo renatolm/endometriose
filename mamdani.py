@@ -81,5 +81,109 @@ dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#
 
 ## Base de regras
 #Regra 1: dor pelvica fraca; dificuldade baixa; dor costas/pernas fraca => risco baixo
-ativa_regra1 = np.fmin(dorCP_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+ativa_regra1 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
 regra1 = np.fmin(ativa_regra1, risco_baixo)		#implicacao 
+
+#Regra 2: dor pelvica media; dificuldade baixa; dor costas/pernas fraca => risco ??
+ativa_regra2 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_media, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra2 = np.fmin(ativa_regra2, risco_baixo)		#implicacao 
+
+#Regra 3: dor pelvica forte; dificuldade baixa; dor costas/pernas fraca => risco ??
+ativa_regra3 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_forte, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra3 = np.fmin(ativa_regra3, risco_baixo)		#implicacao 
+
+#Regra 4: dor pelvica fraca; dificuldade media; dor costas/pernas fraca => risco ??
+ativa_regra4 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra4 = np.fmin(ativa_regra4, risco_baixo)		#implicacao 
+
+#Regra 5: dor pelvica media; dificuldade media; dor costas/pernas fraca => risco ??
+ativa_regra5 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_media, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra5 = np.fmin(ativa_regra5, risco_baixo)		#implicacao 
+
+#Regra 6: dor pelvica forte; dificuldade media; dor costas/pernas fraca => risco ??
+ativa_regra6 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_forte, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra6 = np.fmin(ativa_regra6, risco_baixo)		#implicacao 
+
+#Regra 7: dor pelvica fraca; dificuldade alta; dor costas/pernas fraca => risco ??
+ativa_regra7 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_fraca, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra7 = np.fmin(ativa_regra7, risco_baixo)		#implicacao 
+
+#Regra 8: dor pelvica media; dificuldade alta; dor costas/pernas fraca => risco ??
+ativa_regra8 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_media, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra8 = np.fmin(ativa_regra8, risco_baixo)		#implicacao 
+
+#Regra 9: dor pelvica forte; dificuldade alta; dor costas/pernas fraca => risco ??
+ativa_regra9 = np.fmin(dorCP_nivel_fraca, np.fmin(dorP_nivel_forte, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra9 = np.fmin(ativa_regra9, risco_baixo)		#implicacao 
+
+#Regra 10: dor pelvica fraca; dificuldade baixa; dor costas/pernas media => risco ??
+ativa_regra10 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra10 = np.fmin(ativa_regra10, risco_baixo)		#implicacao 
+
+#Regra 11: dor pelvica media; dificuldade baixa; dor costas/pernas media => risco ??
+ativa_regra11 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_media, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra11 = np.fmin(ativa_regra11, risco_baixo)		#implicacao 
+
+#Regra 12: dor pelvica forte; dificuldade baixa; dor costas/pernas media => risco ??
+ativa_regra12 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_forte, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra12 = np.fmin(ativa_regra12, risco_baixo)		#implicacao 
+
+#Regra 13: dor pelvica fraca; dificuldade media; dor costas/pernas media => risco ??
+ativa_regra13 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_fraca, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra13 = np.fmin(ativa_regra13, risco_baixo)		#implicacao 
+
+#Regra 14: dor pelvica media; dificuldade media; dor costas/pernas media => risco ??
+ativa_regra14 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_media, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra14 = np.fmin(ativa_regra14, risco_baixo)		#implicacao 
+
+#Regra 15: dor pelvica forte; dificuldade media; dor costas/pernas media => risco ??
+ativa_regra15 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_forte, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra15 = np.fmin(ativa_regra15, risco_baixo)		#implicacao 
+
+#Regra 16: dor pelvica fraca; dificuldade alta; dor costas/pernas media => risco ??
+ativa_regra16 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_fraca, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra16 = np.fmin(ativa_regra16, risco_baixo)		#implicacao 
+
+#Regra 17: dor pelvica media; dificuldade alta; dor costas/pernas media => risco ??
+ativa_regra17 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_media, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra17 = np.fmin(ativa_regra17, risco_baixo)		#implicacao 
+
+#Regra 18: dor pelvica forte; dificuldade alta; dor costas/pernas media => risco ??
+ativa_regra18 = np.fmin(dorCP_nivel_media, np.fmin(dorP_nivel_forte, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra18 = np.fmin(ativa_regra18, risco_baixo)		#implicacao 
+
+#Regra 19: dor pelvica fraca; dificuldade baixa; dor costas/pernas forte => risco ??
+ativa_regra19 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_fraca, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra19 = np.fmin(ativa_regra19, risco_baixo)		#implicacao 
+
+#Regra 20: dor pelvica media; dificuldade baixa; dor costas/pernas forte => risco ??
+ativa_regra20 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_media, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra20 = np.fmin(ativa_regra20, risco_baixo)		#implicacao 
+
+#Regra 21: dor pelvica forte; dificuldade baixa; dor costas/pernas forte => risco ??
+ativa_regra21 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_forte, dificuldade_nivel_baixa))		#composicao usando operador AND (minimo)
+#regra21 = np.fmin(ativa_regra21, risco_baixo)		#implicacao 
+
+#Regra 22: dor pelvica fraca; dificuldade media; dor costas/pernas forte => risco ??
+ativa_regra22 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_fraca, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra22 = np.fmin(ativa_regra22, risco_baixo)		#implicacao 
+
+#Regra 23: dor pelvica media; dificuldade media; dor costas/pernas forte => risco ??
+ativa_regra23 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_media, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra23 = np.fmin(ativa_regra23, risco_baixo)		#implicacao 
+
+#Regra 24: dor pelvica forte; dificuldade media; dor costas/pernas forte => risco ??
+ativa_regra24 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_forte, dificuldade_nivel_media))		#composicao usando operador AND (minimo)
+#regra24 = np.fmin(ativa_regra24, risco_baixo)		#implicacao 
+
+#Regra 25: dor pelvica fraca; dificuldade alta; dor costas/pernas forte => risco ??
+ativa_regra25 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_fraca, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra25 = np.fmin(ativa_regra25, risco_baixo)		#implicacao 
+
+#Regra 26: dor pelvica media; dificuldade alta; dor costas/pernas forte => risco ??
+ativa_regra26 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_media, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+#regra26 = np.fmin(ativa_regra26, risco_baixo)		#implicacao 
+
+#Regra 27: dor pelvica forte; dificuldade alta; dor costas/pernas forte => risco alto
+ativa_regra27 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_forte, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
+regra27 = np.fmin(ativa_regra27, risco_alto)		#implicacao 
