@@ -64,19 +64,19 @@ plt.show()
 
 ## Simulando uma entrada com:
 #Nivel de dor pelvica 9
-dorP_nivel_fraca = fuzz.interp_membership(dorPelvica, dorP_fraca, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica fraca
-dorP_nivel_media = fuzz.interp_membership(dorPelvica, dorP_media, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica media
-dorP_nivel_forte = fuzz.interp_membership(dorPelvica, dorP_forte, 9)	#faz a interseção da entrada (9) com a funcao de pertinencia da dor pelvica forte
+dorP_nivel_fraca = fuzz.interp_membership(dorPelvica, dorP_fraca, 9)	#faz a intersecao da entrada (9) com a funcao de pertinencia da dor pelvica fraca
+dorP_nivel_media = fuzz.interp_membership(dorPelvica, dorP_media, 9)	#faz a intersecao da entrada (9) com a funcao de pertinencia da dor pelvica media
+dorP_nivel_forte = fuzz.interp_membership(dorPelvica, dorP_forte, 9)	#faz a intersecao da entrada (9) com a funcao de pertinencia da dor pelvica forte
 
 #Nivel de dificuldade para engravidar 7
-dificuldade_nivel_baixa = fuzz.interp_membership(dificuldadeEngravidar, dific_baixa, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade baixa
-dificuldade_nivel_media = fuzz.interp_membership(dificuldadeEngravidar, dific_media, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade media
-dificuldade_nivel_alta = fuzz.interp_membership(dificuldadeEngravidar, dific_alta, 7)	#faz a interseção da entrada (7) com a funcao de pertinencia da dificuldade alta
+dificuldade_nivel_baixa = fuzz.interp_membership(dificuldadeEngravidar, dific_baixa, 7)	#faz a intersecao da entrada (7) com a funcao de pertinencia da dificuldade baixa
+dificuldade_nivel_media = fuzz.interp_membership(dificuldadeEngravidar, dific_media, 7)	#faz a intersecao da entrada (7) com a funcao de pertinencia da dificuldade media
+dificuldade_nivel_alta = fuzz.interp_membership(dificuldadeEngravidar, dific_alta, 7)	#faz a intersecao da entrada (7) com a funcao de pertinencia da dificuldade alta
 
 #Nivel de dor nas costas/pernas 8
-dorCP_nivel_fraca = fuzz.interp_membership(dorNasCostasPernas, dorCP_fraca, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas fraca
-dorCP_nivel_media = fuzz.interp_membership(dorNasCostasPernas, dorCP_media, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas media
-dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#faz a interseção da entrada (8) com a funcao de pertinencia da dor nas costas/pernas forte
+dorCP_nivel_fraca = fuzz.interp_membership(dorNasCostasPernas, dorCP_fraca, 8)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas fraca
+dorCP_nivel_media = fuzz.interp_membership(dorNasCostasPernas, dorCP_media, 8)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas media
+dorCP_nivel_forte = fuzz.interp_membership(dorNasCostasPernas, dorCP_forte, 8)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas forte
 
 
 ## Base de regras
@@ -187,3 +187,27 @@ ativa_regra26 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_media, dificuldade
 #Regra 27: dor pelvica forte; dificuldade alta; dor costas/pernas forte => risco alto
 ativa_regra27 = np.fmin(dorCP_nivel_forte, np.fmin(dorP_nivel_forte, dificuldade_nivel_alta))		#composicao usando operador AND (minimo)
 regra27 = np.fmin(ativa_regra27, risco_alto)		#implicacao 
+
+
+## Agregacao das regras
+agregacao = np.fmax(regra1, regra27)	#agregacao das regras implementadas ate o momento
+
+risco0 = np.zeros_like(risco)	#variavel auxiliar para montar o grafico
+
+
+## Calculo do resultado defuzzificado
+risco_def = fuzz.defuzz(risco, agregacao, 'centroid')		#defuzzificacao pelo metodo centroide
+risco_ativacao = fuzz.interp_membership(risco, agregacao, risco_def)	#intersecao do risco defuzzificado com a funcao de pertinencia
+
+## Grafico da funcao de pertinencia resultante
+fig, ax0 = plt.subplots(figsize=(8, 3))
+
+ax0.plot(risco, risco_baixo, 'b', linewidth=0.5, linestyle='--')
+ax0.plot(risco, risco_medio, 'g', linewidth=0.5, linestyle='--')
+ax0.plot(risco, risco_alto, 'r', linewidth=0.5, linestyle='--')
+ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
+ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
+ax0.set_title("Agregacao das regras e resultado defuzzificado")
+
+plt.tight_layout()
+plt.show()
