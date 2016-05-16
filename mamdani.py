@@ -11,24 +11,24 @@ dorNasCostasPernas = np.arange(0,11,1)		#nivel de dor nas costas/pernas (0 a 10)
 risco = np.arange(0,11,1)		#nivel de risco de endometriose (0 a 10)
 
 #Funcoes de pertinencia de Dor Pelvica
-dorP_fraca = fuzz.trimf(dorPelvica, [0,0,5])
-dorP_media = fuzz.trimf(dorPelvica, [0,5,10])
-dorP_forte = fuzz.trimf(dorPelvica, [5,10,10])
+dorP_fraca = fuzz.trimf(dorPelvica, [0,0,5])	#dor pelvica fraca
+dorP_media = fuzz.trimf(dorPelvica, [0,5,10])	#dor pelvica media
+dorP_forte = fuzz.trimf(dorPelvica, [5,10,10])	#dor pelvica forte
 
 #Funcoes de pertinencia de Dificuldade Para Engravidar
-dific_baixa = fuzz.trimf(dificuldadeEngravidar, [0,0,5])
-dific_media = fuzz.trimf(dificuldadeEngravidar, [0,5,10])
-dific_alta = fuzz.trimf(dificuldadeEngravidar, [5,10,10])
+dific_baixa = fuzz.trimf(dificuldadeEngravidar, [0,0,5])	#dificuldade baixa
+dific_media = fuzz.trimf(dificuldadeEngravidar, [0,5,10])	#dificuldade media
+dific_alta = fuzz.trimf(dificuldadeEngravidar, [5,10,10])	#dificuldade alta
 
 #Funcoes de pertinencia de Dor Nas Costas e Pernas
-dorCP_fraca = fuzz.trimf(dorNasCostasPernas, [0,0,5])
-dorCP_media = fuzz.trimf(dorNasCostasPernas, [0,5,10])
-dorCP_forte = fuzz.trimf(dorNasCostasPernas, [5,10,10])
+dorCP_fraca = fuzz.trimf(dorNasCostasPernas, [0,0,5])		#dor nas costas e/ou pernas fraca
+dorCP_media = fuzz.trimf(dorNasCostasPernas, [0,5,10])		#dor nas costas e/ou pernas media
+dorCP_forte = fuzz.trimf(dorNasCostasPernas, [5,10,10])		#dor nas costas e/ou pernas forte
 
 #Funcoes de pertinencia do Risco de Endometriose
-risco_baixo = fuzz.trimf(risco, [0,0,5])
-risco_medio = fuzz.trimf(risco, [0,5,10])
-risco_alto = fuzz.trimf(risco, [5,10,10])
+risco_baixo = fuzz.trimf(risco, [0,0,5])		#risco de endometriose baixo
+risco_medio = fuzz.trimf(risco, [0,5,10])		#risco de endometriose medio
+risco_alto = fuzz.trimf(risco, [5,10,10])		#risco de endometriose alto
 
 #Montar graficos das funcoes de pertinencia
 fig, (ax0, ax1, ax2, ax3) = plt.subplots(nrows=4, figsize=(8,9))
