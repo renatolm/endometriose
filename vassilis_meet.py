@@ -276,6 +276,8 @@ def vassilis_defuzz(dism,disp,dor,cans):
 	## Simulando uma entrada com:
 	#Nivel de dismenorreia 10
 	dismenorreia_nivel_leve = dismenorreiaLeve()
+	print "testeee: "
+	print dismenorreia_nivel_leve
 	dismenorreia_nivel_moderada = dismenorreiaModerada()
 	dismenorreia_nivel_intensa = dismenorreiaIntensa()
 
@@ -894,4 +896,4 @@ def vassilis_defuzz(dism,disp,dor,cans):
 
 	return risco_def
 
-vassilis_defuzz(10,10,10,10)
+vassilis_defuzz(0,0,0,0)

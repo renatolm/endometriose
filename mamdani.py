@@ -41,41 +41,7 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_improvavel = fuzz.trimf(risco, [0,0,33])		#risco de endometriose baixo
 	risco_poucoprovavel = fuzz.trimf(risco, [0,33,66])		#risco de endometriose medio
 	risco_provavel = fuzz.trimf(risco, [33,66,100])		#risco de endometriose alto
-	risco_muitoprovavel = fuzz.trimf(risco, [66,100,100])		#risco de endometriose alto
-
-	#Montar graficos das funcoes de pertinencia
-	#fig, (ax0, ax1, ax2, ax3) = plt.subplots(nrows=5, figsize=(8,9))
-	#fig, (ax0, ax3) = plt.subplots(nrows=2, figsize=(8,9))
-
-	#ax0.plot(dismenorreia_dominio, dismenorreia_leve, 'b', linewidth=1.5, label='Leve')
-	#ax0.plot(dismenorreia_dominio, dismenorreia_moderada, 'g', linewidth=1.5, label='Moderado')
-	#ax0.plot(dismenorreia_dominio, dismenorreia_intensa, 'r', linewidth=1.5, label='Intenso')
-	#ax0.set_title("Dor Pelvica")
-	#ax0.set_title("Sintomas")
-	#ax0.legend()
-
-	#ax1.plot(dificuldadeEngravidar, dific_baixa, 'b', linewidth=1.5, label='Baixa')
-	#ax1.plot(dificuldadeEngravidar, dific_media, 'g', linewidth=1.5, label='Media')
-	#ax1.plot(dificuldadeEngravidar, dific_alta, 'r', linewidth=1.5, label='Alta')
-	#ax1.set_title("Dificuldade Para Engravidar")
-	#ax1.legend()
-
-	#ax2.plot(dorNasCostasPernas, dorCP_fraca, 'b', linewidth=1.5, label='Fraca')
-	#ax2.plot(dorNasCostasPernas, dorCP_media, 'g', linewidth=1.5, label='Media')
-	#ax2.plot(dorNasCostasPernas, dorCP_forte, 'r', linewidth=1.5, label='Forte')
-	#ax2.set_title("Dor Nas Costas e Pernas")
-	#ax2.legend()
-
-	#ax3.plot(risco, risco_improvavel, 'b', linewidth=1.5, label='I')
-	#ax3.plot(risco, risco_poucoprovavel, 'g', linewidth=1.5, label='PP')
-	#ax3.plot(risco, risco_provavel, 'y', linewidth=1.5, label='P')
-	#ax3.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP')
-	#ax3.set_title("Risco de Endometriose")
-	#ax3.legend()
-
-	#Exibir graficos das funcoes de pertinencia
-	#plt.tight_layout()
-	#plt.show()
+	risco_muitoprovavel = fuzz.trimf(risco, [66,100,100])		#risco de endometriose alto	
 
 
 	## Simulando uma entrada com:
@@ -680,19 +646,21 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_ativacao = fuzz.interp_membership(risco, agregacao, risco_def)	#intersecao do risco defuzzificado com a funcao de pertinencia
 
 	## Grafico da funcao de pertinencia resultante
-	#fig, ax0 = plt.subplots(figsize=(9.27,3.23))
+	fig, ax0 = plt.subplots(figsize=(9.27,3.23))
 
-	#ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
-	#ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
-	#ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
-	#ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
-	#ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
-	#ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
-	#ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
-	#plt.xticks(np.append(plt.xticks()[0],risco_def))
-	#plt.xlabel('risco (%)')
-	#ax0.set_title("Agregacao das regras e resultado defuzzificado")
+	ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
+	ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
+	ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
+	ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
+	ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
+	ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
+	ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
+	plt.xticks(np.append(plt.xticks()[0],risco_def))
+	plt.xlabel('risco (%)')
+	ax0.set_title("Agregacao das regras e resultado defuzzificado")
 
-	#plt.tight_layout()
-	#plt.show()
+	plt.tight_layout()
+	plt.show()
 	return risco_def
+
+mamdani_defuzz(0,0,0,0)
