@@ -1,41 +1,270 @@
+from __future__ import division
 import numpy as np
 import skfuzzy as fuzz
 import matplotlib.pyplot as plt
+import scipy.integrate as integrate
 
-def mamdani_defuzz(dism, disp, dor, cans):
+def vassilis_defuzz(dism,disp,dor,cans):
 	dismenorreia = dism
 	dispareunia = disp
 	dorNasCostasPernas = dor
 	cansaco = cans
 
-	#Antecedentes
-	dismenorreia_dominio = np.arange(0,11,1)		#nivel de dismenorreia (0 a 10)
-	dispareunia_dominio = np.arange(0,11,1)		#nivel de dispareunia (0 a 10)
-	dorNasCostasPernas_dominio = np.arange(0,11,1)		#nivel de dor nas costas/pernas (0 a 10)
-	cansaco_dominio = np.arange(0,11,1)		#nivel de cansaco (0 a 10)
+	def nivel_leve_decresc(h):
+		return 5-(5*h)
+
+	def nivel_moderado_cresc(h):
+		return 5*h
+
+	def nivel_moderado_decresc(h):
+		return 10-(5*h)
+
+	def nivel_intenso_cresc(h):
+		return (5*h)+5
+
+	def nivel_dismenorreia_cresc(h):
+		return h + dismenorreia - 1
+
+	def nivel_dismenorreia_decresc(h):
+		return dismenorreia + 1 - h
+
+	def integrandoDismenorreiaLeve(h):
+		return (10+nivel_leve_decresc(h) - nivel_dismenorreia_cresc(h))/(10+nivel_dismenorreia_decresc(h) - nivel_dismenorreia_cresc(h))
+
+	def integrandoDismenorreiaModEsq(h):
+		return (10+nivel_dismenorreia_decresc(h) - nivel_moderado_cresc(h))/(10+nivel_dismenorreia_decresc(h) - nivel_dismenorreia_cresc(h))
+
+	def integrandoDismenorreiaModDir(h):
+		return (10+nivel_moderado_decresc(h) - nivel_dismenorreia_cresc(h))/(10+nivel_dismenorreia_decresc(h) - nivel_dismenorreia_cresc(h))
+
+	def integrandoDismenorreiaIntensa(h):
+		return (10+nivel_dismenorreia_cresc(h)-nivel_intenso_cresc(h))/(10+nivel_dismenorreia_decresc(h) - nivel_dismenorreia_cresc(h))
+
+	def dismenorreiaLeve():
+		h1 = 1 - (dismenorreia/6)
+		h2 = 1 - (dismenorreia/4)
+		if dismenorreia == 0:
+			return 1
+		elif h1 > 0 and h2 > 0:		
+			return h2 + integrate.quad(integrandoDismenorreiaLeve, h2, h1)[0]
+		elif h1>0 and h2 <= 0:
+			return integrate.quad(integrandoDismenorreiaLeve, 0, h1)[0]
+		else:
+			return 0
+
+	def dismenorreiaModerada():	
+		if dismenorreia < 5:
+			h1 = (dismenorreia/4) - (1/4)
+			h2 = (dismenorreia/6) - (1/6)
+			if h1 > 0 and h2 > 0:
+				return h1 + integrate.quad(integrandoDismenorreiaModEsq, h1, h2)[0]
+			elif h1 <= 0:
+				return integrate.quad(integrandoDismenorreiaModEsq, 0, h2)[0]			
+		elif dismenorreia > 5:
+			h1 = (11/6)-(dismenorreia/6)
+			h2 = (9/4)-(dismenorreia/4)
+			if h1>0 and h2>0:
+				return h2 + integrate.quad(integrandoDismenorreiaModDir, h2, h1)[0]
+			elif h2 <= 0:
+				return integrate.quad(integrandoDismenorreiaModDir, 0, h1)[0]			
+		else:
+			return 1
+
+	def dismenorreiaIntensa():
+		h1 = (dismenorreia/4) - (6/4)
+		h2 = (dismenorreia/6) - (4/6)
+		if dismenorreia == 10:
+			return 1
+		elif h1>0 and h2>0:
+			return h1 + integrate.quad(integrandoDismenorreiaIntensa, h1, h2)[0]			
+		elif h2 > 0 and h1 <= 0:			
+			return integrate.quad(integrandoDismenorreiaIntensa, 0, h2)[0]
+		else:
+			return 0
+
+	def nivel_dispareunia_cresc(h):
+		return h + dispareunia - 1
+
+	def nivel_dispareunia_decresc(h):
+		return dispareunia + 1 - h
+
+	def integrandoDispareuniaLeve(h):
+		return (10+nivel_leve_decresc(h) - nivel_dispareunia_cresc(h))/(10+nivel_dispareunia_decresc(h) - nivel_dispareunia_cresc(h))
+
+	def integrandoDispareuniaModEsq(h):
+		return (10+nivel_dispareunia_decresc(h) - nivel_moderado_cresc(h))/(10+nivel_dispareunia_decresc(h) - nivel_dispareunia_cresc(h))
+
+	def integrandoDispareuniaModDir(h):
+		return (10+nivel_moderado_decresc(h) - nivel_dispareunia_cresc(h))/(10+nivel_dispareunia_decresc(h) - nivel_dispareunia_cresc(h))
+
+	def integrandoDispareuniaIntensa(h):
+		return (10+nivel_dispareunia_cresc(h) - nivel_intenso_cresc(h))/(10+nivel_dispareunia_decresc(h) - nivel_dispareunia_cresc(h))
+
+	def dispareuniaLeve():
+		h1 = 1 - (dispareunia/6)
+		h2 = 1 - (dispareunia/4)
+		if dispareunia == 0:
+			return 1
+		elif h1 > 0 and h2 > 0:		
+			return h2 + integrate.quad(integrandoDispareuniaLeve, h2, h1)[0]
+		elif h1>0 and h2 <= 0:
+			return integrate.quad(integrandoDispareuniaLeve, 0, h1)[0]
+		else:
+			return 0
+
+	def dispareuniaModerada():	
+		if dispareunia < 5:
+			h1 = (dispareunia/4) - (1/4)
+			h2 = (dispareunia/6) - (1/6)
+			if h1 > 0 and h2 > 0:
+				return h1 + integrate.quad(integrandoDispareuniaModEsq, h1, h2)[0]
+			elif h1 <= 0:
+				return integrate.quad(integrandoDispareuniaModEsq, 0, h2)[0]			
+		elif dispareunia > 5:
+			h1 = (11/6)-(dispareunia/6)
+			h2 = (9/4)-(dispareunia/4)
+			if h1>0 and h2>0:
+				return h2 + integrate.quad(integrandoDispareuniaModDir, h2, h1)[0]
+			elif h2 <= 0:
+				return integrate.quad(integrandoDispareuniaModDir, 0, h1)[0]			
+		else:
+			return 1
+
+	def dispareuniaIntensa():
+		h1 = (dispareunia/4) - (6/4)
+		h2 = (dispareunia/6) - (4/6)
+		if dispareunia == 10:
+			return 1
+		elif h1>0 and h2>0:
+			return h1 + integrate.quad(integrandoDispareuniaIntensa, h1, h2)[0]			
+		elif h2 > 0 and h1 <= 0:			
+			return integrate.quad(integrandoDispareuniaIntensa, 0, h2)[0]
+		else:
+			return 0
+
+	def nivel_dorcp_cresc(h):
+		return h + dorNasCostasPernas - 1
+
+	def nivel_dorcp_decresc(h):
+		return dorNasCostasPernas + 1 - h
+
+	def integrandoDorCPLeve(h):
+		return (10+nivel_leve_decresc(h) - nivel_dorcp_cresc(h))/(10+nivel_dorcp_decresc(h) - nivel_dorcp_cresc(h))
+
+	def integrandoDorCPModEsq(h):
+		return (10+nivel_dorcp_decresc(h) - nivel_moderado_cresc(h))/(10+nivel_dorcp_decresc(h) - nivel_dorcp_cresc(h))
+
+	def integrandoDorCPModDir(h):
+		return (10+nivel_moderado_decresc(h) - nivel_dorcp_cresc(h))/(10+nivel_dorcp_decresc(h) - nivel_dorcp_cresc(h))
+
+	def integrandoDorCPIntensa(h):
+		return (10+nivel_dorcp_cresc(h) - nivel_intenso_cresc(h))/(10+nivel_dorcp_decresc(h) - nivel_dorcp_cresc(h))
+
+	def dorCPLeve():
+		h1 = 1 - (dorNasCostasPernas/6)
+		h2 = 1 - (dorNasCostasPernas/4)
+		if dorNasCostasPernas == 0:
+			return 1
+		elif h1 > 0 and h2 > 0:		
+			return h2 + integrate.quad(integrandoDorCPLeve, h2, h1)[0]
+		elif h1>0 and h2 <= 0:
+			return integrate.quad(integrandoDorCPLeve, 0, h1)[0]
+		else:
+			return 0
+
+	def dorCPModerada():	
+		if dorNasCostasPernas < 5:
+			h1 = (dorNasCostasPernas/4) - (1/4)
+			h2 = (dorNasCostasPernas/6) - (1/6)
+			if h1 > 0 and h2 > 0:
+				return h1 + integrate.quad(integrandoDorCPModEsq, h1, h2)[0]
+			elif h1 <= 0:
+				return integrate.quad(integrandoDorCPModDir, 0, h2)[0]			
+		elif dorNasCostasPernas > 5:
+			h1 = (11/6)-(dorNasCostasPernas/6)
+			h2 = (9/4)-(dorNasCostasPernas/4)
+			if h1>0 and h2>0:
+				return h2 + integrate.quad(integrandoDorCPModDir, h2, h1)[0]
+			elif h2 <= 0:
+				return integrate.quad(integrandoDorCPModDir, 0, h1)[0]			
+		else:
+			return 1
+
+	def dorCPIntensa():
+		h1 = (dorNasCostasPernas/4) - (6/4)
+		h2 = (dorNasCostasPernas/6) - (4/6)
+		if dorNasCostasPernas == 10:
+			return 1
+		elif h1>0 and h2>0:
+			return h1 + integrate.quad(integrandoDorCPIntensa, h1, h2)[0]			
+		elif h2 > 0 and h1 <= 0:			
+			return integrate.quad(integrandoDorCPIntensa, 0, h2)[0]
+		else:
+			return 0
+
+	def nivel_cansaco_cresc(h):
+		return h + cansaco - 1
+
+	def nivel_cansaco_decresc(h):
+		return cansaco + 1 - h
+
+	def integrandoCansacoLeve(h):
+		return (10+nivel_leve_decresc(h) - nivel_cansaco_cresc(h))/(10+nivel_cansaco_decresc(h) - nivel_cansaco_cresc(h))
+
+	def integrandoCansacoModEsq(h):
+		return (10+nivel_cansaco_decresc(h) - nivel_moderado_cresc(h))/(10+nivel_cansaco_decresc(h) - nivel_cansaco_cresc(h))
+
+	def integrandoCansacoModDir(h):
+		return (10+nivel_moderado_decresc(h) - nivel_cansaco_cresc(h))/(10+nivel_cansaco_decresc(h) - nivel_cansaco_cresc(h))
+
+	def integrandoCansacoIntensa(h):
+		return (10+nivel_cansaco_cresc(h) - nivel_intenso_cresc(h))/(10+nivel_cansaco_decresc(h) - nivel_cansaco_cresc(h))
+
+	def cansacoLeve():
+		h1 = 1 - (cansaco/6)
+		h2 = 1 - (cansaco/4)
+		if cansaco == 0:
+			return 1
+		elif h1 > 0 and h2 > 0:		
+			return h2 + integrate.quad(integrandoCansacoLeve, h2, h1)[0]
+		elif h1>0 and h2 <= 0:
+			return integrate.quad(integrandoCansacoLeve, 0, h1)[0]
+		else:
+			return 0
+
+	def cansacoModerado():	
+		if cansaco < 5:
+			h1 = (cansaco/4) - (1/4)
+			h2 = (cansaco/6) - (1/6)
+			if h1 > 0 and h2 > 0:
+				return h1 + integrate.quad(integrandoCansacoModEsq, h1, h2)[0]
+			elif h1 <= 0:
+				return integrate.quad(integrandoCansacoModEsq, 0, h2)[0]			
+		elif cansaco > 5:
+			h1 = (11/6)-(cansaco/6)
+			h2 = (9/4)-(cansaco/4)
+			if h1>0 and h2>0:
+				return h2 + integrate.quad(integrandoCansacoModDir, h2, h1)[0]
+			elif h2 <= 0:
+				return integrate.quad(integrandoCansacoModDir, 0, h1)[0]			
+		else:
+			return 1
+
+	def cansacoIntenso():
+		h1 = (cansaco/4) - (6/4)
+		h2 = (cansaco/6) - (4/6)
+		if cansaco == 10:
+			return 1
+		elif h1>0 and h2>0:
+			return h1 + integrate.quad(integrandoCansacoIntensa, h1, h2)[0]			
+		elif h2 > 0 and h1 <= 0:			
+			return integrate.quad(integrandoCansacoIntensa, 0, h2)[0]
+		else:
+			return 0
+
 
 	#Consequente
 	risco = np.arange(0,100,1)		#nivel de risco de endometriose (0 a 10)
-
-	#Funcoes de pertinencia de dismenorreia
-	dismenorreia_leve = fuzz.trimf(dismenorreia_dominio, [0,0,5])		#dismenorreia leve
-	dismenorreia_moderada = fuzz.trimf(dismenorreia_dominio, [0,5,10])	#dismenorreia moderada
-	dismenorreia_intensa = fuzz.trimf(dismenorreia_dominio, [5,10,10])	#dismenorreia intensa
-
-	#Funcoes de pertinencia de dispareunia
-	dispareunia_leve = fuzz.trimf(dispareunia_dominio, [0,0,5])			#dispareunia leve
-	dispareunia_moderada = fuzz.trimf(dispareunia_dominio, [0,5,10])	#dispareunia moderada
-	dispareunia_intensa = fuzz.trimf(dispareunia_dominio, [5,10,10])	#dispareunia intensa
-
-	#Funcoes de pertinencia de Dor Nas Costas e Pernas
-	dorCP_leve = fuzz.trimf(dorNasCostasPernas_dominio, [0,0,5])			#dor nas costas e/ou pernas leve
-	dorCP_moderada = fuzz.trimf(dorNasCostasPernas_dominio, [0,5,10])		#dor nas costas e/ou pernas moderada
-	dorCP_intensa = fuzz.trimf(dorNasCostasPernas_dominio, [5,10,10])		#dor nas costas e/ou pernas intensa
-
-	#Funcoes de pertinencia de cansaco
-	cansaco_leve = fuzz.trimf(cansaco_dominio, [0,0,5])				#cansaco leve
-	cansaco_moderado = fuzz.trimf(cansaco_dominio, [0,5,10])		#cansaco moderada
-	cansaco_intenso = fuzz.trimf(cansaco_dominio, [5,10,10])		#cansaco intensa
 
 	#Funcoes de pertinencia do Risco de Endometriose
 	risco_improvavel = fuzz.trimf(risco, [0,0,33])		#risco de endometriose baixo
@@ -43,63 +272,30 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_provavel = fuzz.trimf(risco, [33,66,100])		#risco de endometriose alto
 	risco_muitoprovavel = fuzz.trimf(risco, [66,100,100])		#risco de endometriose alto
 
-	#Montar graficos das funcoes de pertinencia
-	#fig, (ax0, ax1, ax2, ax3) = plt.subplots(nrows=5, figsize=(8,9))
-	#fig, (ax0, ax3) = plt.subplots(nrows=2, figsize=(8,9))
-
-	#ax0.plot(dismenorreia_dominio, dismenorreia_leve, 'b', linewidth=1.5, label='Leve')
-	#ax0.plot(dismenorreia_dominio, dismenorreia_moderada, 'g', linewidth=1.5, label='Moderado')
-	#ax0.plot(dismenorreia_dominio, dismenorreia_intensa, 'r', linewidth=1.5, label='Intenso')
-	#ax0.set_title("Dor Pelvica")
-	#ax0.set_title("Sintomas")
-	#ax0.legend()
-
-	#ax1.plot(dificuldadeEngravidar, dific_baixa, 'b', linewidth=1.5, label='Baixa')
-	#ax1.plot(dificuldadeEngravidar, dific_media, 'g', linewidth=1.5, label='Media')
-	#ax1.plot(dificuldadeEngravidar, dific_alta, 'r', linewidth=1.5, label='Alta')
-	#ax1.set_title("Dificuldade Para Engravidar")
-	#ax1.legend()
-
-	#ax2.plot(dorNasCostasPernas, dorCP_fraca, 'b', linewidth=1.5, label='Fraca')
-	#ax2.plot(dorNasCostasPernas, dorCP_media, 'g', linewidth=1.5, label='Media')
-	#ax2.plot(dorNasCostasPernas, dorCP_forte, 'r', linewidth=1.5, label='Forte')
-	#ax2.set_title("Dor Nas Costas e Pernas")
-	#ax2.legend()
-
-	#ax3.plot(risco, risco_improvavel, 'b', linewidth=1.5, label='I')
-	#ax3.plot(risco, risco_poucoprovavel, 'g', linewidth=1.5, label='PP')
-	#ax3.plot(risco, risco_provavel, 'y', linewidth=1.5, label='P')
-	#ax3.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP')
-	#ax3.set_title("Risco de Endometriose")
-	#ax3.legend()
-
-	#Exibir graficos das funcoes de pertinencia
-	#plt.tight_layout()
-	#plt.show()
-
 
 	## Simulando uma entrada com:
 	#Nivel de dismenorreia 10
-	dismenorreia_nivel_leve = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_leve, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia leve
-	dismenorreia_nivel_moderada = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_moderada, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia moderada
-	dismenorreia_nivel_intensa = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_intensa, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia intensa
+	dismenorreia_nivel_leve = dismenorreiaLeve()
+	dismenorreia_nivel_moderada = dismenorreiaModerada()
+	dismenorreia_nivel_intensa = dismenorreiaIntensa()
 
 	#Nivel de dispareunia 8
-	dispareunia_nivel_leve = fuzz.interp_membership(dispareunia_dominio, dispareunia_leve, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia leve
-	dispareunia_nivel_moderada = fuzz.interp_membership(dispareunia_dominio, dispareunia_moderada, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia moderada
-	dispareunia_nivel_intensa = fuzz.interp_membership(dispareunia_dominio, dispareunia_intensa, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia instensa
+	dispareunia_nivel_leve = dispareuniaLeve()
+	dispareunia_nivel_moderada = dispareuniaModerada()
+	dispareunia_nivel_intensa = dispareuniaIntensa()
 
 	#Nivel de dor nas costas/pernas 8
-	dorCP_nivel_leve = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_leve, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas leve
-	dorCP_nivel_moderada = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_moderada, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas moderada
-	dorCP_nivel_intensa = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_intensa, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas intensa
+	dorCP_nivel_leve = dorCPLeve()
+	dorCP_nivel_moderada = dorCPModerada()
+	dorCP_nivel_intensa = dorCPIntensa()
 
 	#Nivel de cansaco 9
-	cansaco_nivel_leve = fuzz.interp_membership(cansaco_dominio, cansaco_leve, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco leve
-	cansaco_nivel_moderado = fuzz.interp_membership(cansaco_dominio, cansaco_moderado, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco moderado
-	cansaco_nivel_intenso = fuzz.interp_membership(cansaco_dominio, cansaco_intenso, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco intenso
+	cansaco_nivel_leve = cansacoLeve()
+	cansaco_nivel_moderado = cansacoModerado()
+	cansaco_nivel_intenso = cansacoIntenso()
 
 	regras_ativas = []
+
 
 	## Base de regras
 	#Regra 1: dismenorreia leve; dispareunia leve; dor costas/pernas leve; cansaco leve => risco improvavel
@@ -680,19 +876,22 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_ativacao = fuzz.interp_membership(risco, agregacao, risco_def)	#intersecao do risco defuzzificado com a funcao de pertinencia
 
 	## Grafico da funcao de pertinencia resultante
-	#fig, ax0 = plt.subplots(figsize=(9.27,3.23))
+	fig, ax0 = plt.subplots(figsize=(9.27,3.23))
 
-	#ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
-	#ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
-	#ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
-	#ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
-	#ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
-	#ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
-	#ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
-	#plt.xticks(np.append(plt.xticks()[0],risco_def))
-	#plt.xlabel('risco (%)')
-	#ax0.set_title("Agregacao das regras e resultado defuzzificado")
+	ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
+	ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
+	ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
+	ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
+	ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
+	ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
+	ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
+	plt.xticks(np.append(plt.xticks()[0],risco_def))
+	plt.xlabel('risco (%)')
+	ax0.set_title("Agregacao das regras e resultado defuzzificado")
 
-	#plt.tight_layout()
-	#plt.show()
+	plt.tight_layout()
+	plt.show()
+
 	return risco_def
+
+vassilis_defuzz(10,10,10,10)
