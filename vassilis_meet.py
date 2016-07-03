@@ -276,8 +276,6 @@ def vassilis_defuzz(dism,disp,dor,cans):
 	## Simulando uma entrada com:
 	#Nivel de dismenorreia 10
 	dismenorreia_nivel_leve = dismenorreiaLeve()
-	print "testeee: "
-	print dismenorreia_nivel_leve
 	dismenorreia_nivel_moderada = dismenorreiaModerada()
 	dismenorreia_nivel_intensa = dismenorreiaIntensa()
 
@@ -878,22 +876,23 @@ def vassilis_defuzz(dism,disp,dor,cans):
 	risco_ativacao = fuzz.interp_membership(risco, agregacao, risco_def)	#intersecao do risco defuzzificado com a funcao de pertinencia
 
 	## Grafico da funcao de pertinencia resultante
-	fig, ax0 = plt.subplots(figsize=(9.27,3.23))
+	#fig, ax0 = plt.subplots(figsize=(9.27,3.23))
 
-	ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
-	ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
-	ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
-	ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
-	ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
-	ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
-	ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
-	plt.xticks(np.append(plt.xticks()[0],risco_def))
-	plt.xlabel('risco (%)')
-	ax0.set_title("Agregacao das regras e resultado defuzzificado")
+	#ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
+	#ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
+	#ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
+	#ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
+	#ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
+	#ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
+	#ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
+	#ax0.annotate(str("{0:.1f}".format(risco_def))+"%", xy=(risco_def,risco_ativacao), xycoords='data')
+	#plt.xticks(np.append(plt.xticks()[0],risco_def))	
+	#plt.xlabel('risco (%)')
+#	ax0.set_title("Agregacao das regras e resultado defuzzificado")
 
-	plt.tight_layout()
-	plt.show()
+	#plt.tight_layout()
+	#plt.show()
 
 	return risco_def
 
-vassilis_defuzz(0,0,0,0)
+vassilis_defuzz(10,7,9,8)
