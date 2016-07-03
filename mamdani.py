@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import skfuzzy as fuzz
 import matplotlib.pyplot as plt
@@ -8,8 +9,32 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	dorNasCostasPernas = dor
 	cansaco = cans
 
+	def nivelLeve(entrada):
+		if entrada == 0:
+			return 1
+		elif entrada >= 6:
+			return 0
+		else:
+			return  1 - (entrada/6)
+
+	def nivelModerado(entrada):
+		if entrada == 5:
+			return 1
+		elif entrada < 5:
+			return (entrada/6) - (1/6)
+		else:
+			return (11/6)-(entrada/6)
+
+	def nivelIntenso(entrada):
+		if entrada == 10:
+			return 1
+		elif entrada <=4:
+			return 0
+		else:
+			return (entrada/6) - (4/6)	
+
 	#Antecedentes
-	dismenorreia_dominio = np.arange(0,11,1)		#nivel de dismenorreia (0 a 10)
+	dismenorreia_dominio = np.arange(0,11,0.1)		#nivel de dismenorreia (0 a 10)
 	dispareunia_dominio = np.arange(0,11,1)		#nivel de dispareunia (0 a 10)
 	dorNasCostasPernas_dominio = np.arange(0,11,1)		#nivel de dor nas costas/pernas (0 a 10)
 	cansaco_dominio = np.arange(0,11,1)		#nivel de cansaco (0 a 10)
@@ -42,28 +67,36 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_poucoprovavel = fuzz.trimf(risco, [0,33,66])		#risco de endometriose medio
 	risco_provavel = fuzz.trimf(risco, [33,66,100])		#risco de endometriose alto
 	risco_muitoprovavel = fuzz.trimf(risco, [66,100,100])		#risco de endometriose alto	
+	
 
-
-	## Simulando uma entrada com:
-	#Nivel de dismenorreia 10
-	dismenorreia_nivel_leve = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_leve, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia leve
-	dismenorreia_nivel_moderada = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_moderada, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia moderada
-	dismenorreia_nivel_intensa = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_intensa, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia intensa
-
-	#Nivel de dispareunia 8
-	dispareunia_nivel_leve = fuzz.interp_membership(dispareunia_dominio, dispareunia_leve, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia leve
-	dispareunia_nivel_moderada = fuzz.interp_membership(dispareunia_dominio, dispareunia_moderada, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia moderada
-	dispareunia_nivel_intensa = fuzz.interp_membership(dispareunia_dominio, dispareunia_intensa, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia instensa
-
-	#Nivel de dor nas costas/pernas 8
-	dorCP_nivel_leve = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_leve, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas leve
-	dorCP_nivel_moderada = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_moderada, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas moderada
-	dorCP_nivel_intensa = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_intensa, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas intensa
-
-	#Nivel de cansaco 9
-	cansaco_nivel_leve = fuzz.interp_membership(cansaco_dominio, cansaco_leve, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco leve
-	cansaco_nivel_moderado = fuzz.interp_membership(cansaco_dominio, cansaco_moderado, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco moderado
-	cansaco_nivel_intenso = fuzz.interp_membership(cansaco_dominio, cansaco_intenso, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco intenso
+	## Simulando uma entrada	
+	#dismenorreia_nivel_leve = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_leve, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia leve	
+	dismenorreia_nivel_leve = nivelLeve(dismenorreia)
+	#dismenorreia_nivel_moderada = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_moderada, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia moderada
+	dismenorreia_nivel_moderada = nivelModerado(dismenorreia)
+	#dismenorreia_nivel_intensa = fuzz.interp_membership(dismenorreia_dominio, dismenorreia_intensa, dismenorreia)	#faz a intersecao da entrada (10) com a funcao de pertinencia da dismenorreia intensa
+	dismenorreia_nivel_intensa = nivelIntenso(dismenorreia)
+	
+	#dispareunia_nivel_leve = fuzz.interp_membership(dispareunia_dominio, dispareunia_leve, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia leve
+	dispareunia_nivel_leve = nivelLeve(dispareunia)
+	#dispareunia_nivel_moderada = fuzz.interp_membership(dispareunia_dominio, dispareunia_moderada, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia moderada
+	dispareunia_nivel_moderada = nivelModerado(dispareunia)
+	#dispareunia_nivel_intensa = fuzz.interp_membership(dispareunia_dominio, dispareunia_intensa, dispareunia)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dispareunia instensa
+	dispareunia_nivel_intensa = nivelIntenso(dispareunia)
+	
+	#dorCP_nivel_leve = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_leve, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas leve
+	dorCP_nivel_leve = nivelLeve(dorNasCostasPernas)
+	#dorCP_nivel_moderada = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_moderada, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas moderada
+	dorCP_nivel_moderada = nivelModerado(dorNasCostasPernas)
+	#dorCP_nivel_intensa = fuzz.interp_membership(dorNasCostasPernas_dominio, dorCP_intensa, dorNasCostasPernas)	#faz a intersecao da entrada (8) com a funcao de pertinencia da dor nas costas/pernas intensa
+	dorCP_nivel_intensa = nivelIntenso(dorNasCostasPernas)
+	
+	#cansaco_nivel_leve = fuzz.interp_membership(cansaco_dominio, cansaco_leve, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco leve
+	cansaco_nivel_leve = nivelLeve(cansaco)
+	#cansaco_nivel_moderado = fuzz.interp_membership(cansaco_dominio, cansaco_moderado, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco moderado
+	cansaco_nivel_moderado = nivelModerado(cansaco)
+	#cansaco_nivel_intenso = fuzz.interp_membership(cansaco_dominio, cansaco_intenso, cansaco)	#faz a intersecao da entrada (9) com a funcao de pertinencia de cansaco intenso
+	cansaco_nivel_intenso = nivelIntenso(cansaco)
 
 	regras_ativas = []
 
@@ -646,21 +679,21 @@ def mamdani_defuzz(dism, disp, dor, cans):
 	risco_ativacao = fuzz.interp_membership(risco, agregacao, risco_def)	#intersecao do risco defuzzificado com a funcao de pertinencia
 
 	## Grafico da funcao de pertinencia resultante
-#	fig, ax0 = plt.subplots(figsize=(9.27,3.23))
+	fig, ax0 = plt.subplots(figsize=(9.27,3.23))
 
-#	ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
-#	ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
-#	ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
-#	ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
-#	ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
-#	ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
-#	ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
-#	plt.xticks(np.append(plt.xticks()[0],risco_def))
-#	plt.xlabel('risco (%)')
-#	ax0.set_title("Agregacao das regras e resultado defuzzificado")
+	ax0.plot(risco, risco_improvavel, 'b', linewidth=0.5, label='I', linestyle='--')
+	ax0.plot(risco, risco_poucoprovavel, 'g', linewidth=0.5, label='PP', linestyle='--')
+	ax0.plot(risco, risco_provavel, 'y', linewidth=0.5, label='P', linestyle='--')
+	ax0.plot(risco, risco_muitoprovavel, 'r', linewidth=1.5, label='MP', linestyle='--')
+	ax0.legend(loc='upper center',bbox_to_anchor=(0.5, 1.05), ncol=4, fancybox=True, shadow=True)
+	ax0.fill_between(risco, risco0, agregacao, facecolor='Orange', alpha=0.7)
+	ax0.plot([risco_def, risco_def], [0, risco_ativacao], 'k', linewidth=1.5, alpha=0.9)
+	plt.xticks(np.append(plt.xticks()[0],risco_def))
+	plt.xlabel('risco (%)')
+	ax0.set_title("Agregacao das regras e resultado defuzzificado")
 
-	#plt.tight_layout()
-	#plt.show()
+	plt.tight_layout()
+	plt.show()
 	return risco_def
 
 mamdani_defuzz(0,0,0,0)
