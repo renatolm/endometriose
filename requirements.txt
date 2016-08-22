@@ -1,10 +1,7 @@
 Flask==0.11.1
 Jinja2==2.8
 MarkupSafe==0.23
-MySQL-python==1.2.5
 Pillow==3.0.0
-PyAudio==0.2.8
-PyOpenGL==3.1.0
 Twisted==13.2.0
 Werkzeug==0.11.10
 altgraph==0.10.2
@@ -28,9 +25,6 @@ plotly==1.12.6
 py==1.4.23
 py2app==0.7.3
 pyOpenSSL==0.13.1
-pyadb==0.1.1
-pyglet==1.2.2
-pyglut==1.0.0
 pymongo==2.7
 pyparsing==2.0.1
 pytest==2.6.1
