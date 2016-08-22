@@ -34,7 +34,6 @@ requests==2.8.1
 singledispatch==3.4.0.3
 six==1.4.1
 scipy==0.13.0
-scikit-fuzzy==0.1.9
 scikit-learn==0.17.1
 sklearn==0.0
 tornado==4.3
