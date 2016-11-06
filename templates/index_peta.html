@@ -15,7 +15,7 @@
 	<p>Esta página se propõe a calcular o risco de Endometriose utilizando-se, para tal fim, dos níveis de intensidade de 4 dos sintomas da doença. São eles <b>dismenorreia</b> (dor pélvica durante períodos menstruais), <b>dispareunia</b> (dor durante o ato sexual), <b>dor nas costas e/ou pernas</b> e <b>cansaço</b>.</p>
 	<p><center>Insira os respectivos níveis dos sintomas abaixo (cada sintoma varia numa escala de 0 a 10):</center></p><br><br>
 	<center>
-		<form action="/calcula" method="GET">
+		<form action="/calculaPeta" method="GET">
 			<b>Dismenorreia:</b>
 			<select id="dismenorreia" name="dismenorreia">
   				<option value="0">0</option>
@@ -87,7 +87,7 @@
 		<hr>
 		<br>
 		<p><b>Resultado:</b></p><br>
-		<center><img src="/static/resultado.png?{{ timestamp }}" alt="Clique em enviar para gerar um novo resultado"> </center>
+		<center><img src="/static/resultado_peta.png?{{ timestamp }}" alt="Clique em enviar para gerar um novo resultado"> </center>
 	    </font>
 	</body>
 </html>
